@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * @author Maxim Tereshchenko
  */
-final class FilmDtoAdapter implements FilmDto {
+final class FilmDtoAdapter extends FilmDto {
 
     private final FilmDescriptions.FilmDescription filmDescription;
     private final boolean oscarWinner;
@@ -43,32 +43,5 @@ final class FilmDtoAdapter implements FilmDto {
     @Override
     public int boxOffice() {
         return filmDescription.boxOffice();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(filmDescription);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || o.getClass().isAssignableFrom(FilmDto.class)) {
-            return false;
-        }
-
-        FilmDto that = (FilmDto) o;
-        return imdbId().equals(that.imdbId()) &&
-                name().equals(that.name()) &&
-                isOscarWinner() == that.isOscarWinner() &&
-                rating() == that.rating();
-    }
-
-    @Override
-    public String toString() {
-        return "FilmDtoAdapter{" +
-                "filmDescription=" + filmDescription +
-                ", oscarWinner=" + oscarWinner +
-                ", rating=" + rating +
-                '}';
     }
 }

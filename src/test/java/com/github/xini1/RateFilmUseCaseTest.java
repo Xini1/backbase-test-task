@@ -10,6 +10,7 @@ import com.github.xini1.exception.ImdbIdRequired;
 import com.github.xini1.exception.IncorrectRating;
 import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
+import com.github.xini1.port.usecase.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,6 +20,7 @@ final class RateFilmUseCaseTest {
 
     private final RateFilmUseCase rateFilmUseCase;
     private final List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase;
+    private final SearchFilmUseCase searchFilmUseCase;
 
     RateFilmUseCaseTest() {
         var configuration = new Configuration(
@@ -34,6 +36,7 @@ final class RateFilmUseCaseTest {
         );
         rateFilmUseCase = configuration.rateFilmUseCase();
         list10TopRatedFilmsUseCase = configuration.list10TopRatedFilmsUseCase();
+        searchFilmUseCase = configuration.searchFilmUseCase();
     }
 
     @Test
@@ -118,5 +121,13 @@ final class RateFilmUseCaseTest {
     void givenUserRateNonexistentFilm_thenFilmNotFoundThrown() {
         assertThatThrownBy(() -> rateFilmUseCase.rate("token", "id", 1))
                 .isInstanceOf(FilmNotFound.class);
+    }
+
+    @Test
+    void givenUserRatedFilm_thenFilmHasExactRatingInSearchResult() {
+        rateFilmUseCase.rate("token", "id1", 10);
+
+        assertThat(searchFilmUseCase.search("token", "Rated1"))
+                .containsExactly(new FilmDtoStub("id1", "Rated1", false, 10, 4));
     }
 }

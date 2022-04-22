@@ -1,17 +1,47 @@
 package com.github.xini1.port.usecase;
 
+import java.util.Objects;
+
 /**
  * @author Maxim Tereshchenko
  */
-public interface FilmDto {
+public abstract class FilmDto {
 
-    String imdbId();
+    public abstract String imdbId();
 
-    String name();
+    public abstract String name();
 
-    boolean isOscarWinner();
+    public abstract boolean isOscarWinner();
 
-    int rating();
+    public abstract int rating();
 
-    int boxOffice();
+    public abstract int boxOffice();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(imdbId(), name(), isOscarWinner(), rating(), boxOffice());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FilmDto)) {
+            return false;
+        }
+
+        FilmDto that = (FilmDto) obj;
+        return imdbId().equals(that.imdbId()) &&
+                name().equals(that.name()) &&
+                isOscarWinner() == that.isOscarWinner() &&
+                rating() == that.rating();
+    }
+
+    @Override
+    public String toString() {
+        return "FilmDtoAdapter{" +
+                "imdbId=" + imdbId() +
+                ", name=" + name() +
+                ", isOscarWinner=" + isOscarWinner() +
+                ", rating=" + rating() +
+                '}';
+    }
 }

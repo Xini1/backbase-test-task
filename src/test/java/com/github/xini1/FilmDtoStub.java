@@ -5,7 +5,7 @@ import com.github.xini1.port.usecase.FilmDto;
 /**
  * @author Maxim Tereshchenko
  */
-final class FilmDtoStub implements FilmDto {
+final class FilmDtoStub extends FilmDto {
 
     private final String imdbId;
     private final String name;
@@ -52,16 +52,5 @@ final class FilmDtoStub implements FilmDto {
     @Override
     public int boxOffice() {
         return boxOffice;
-    }
-
-    @Override
-    public String toString() {
-        return "FilmDtoStub{" +
-                "imdbId='" + imdbId + '\'' +
-                ", name='" + name + '\'' +
-                ", oscarWinner=" + oscarWinner +
-                ", rating=" + rating +
-                ", boxOffice=" + boxOffice +
-                '}';
     }
 }

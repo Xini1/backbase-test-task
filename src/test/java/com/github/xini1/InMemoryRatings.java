@@ -36,7 +36,11 @@ final class InMemoryRatings implements Ratings {
 
     @Override
     public int average(String imdbId) {
-        return 0;
+        if (!map.containsKey(imdbId)) {
+            return 0;
+        }
+
+        return Math.round(average(map.get(imdbId)));
     }
 
     private Map.Entry<String, Integer> imdbIdToRoundedAverageRating(Map.Entry<String, Float> entry) {
