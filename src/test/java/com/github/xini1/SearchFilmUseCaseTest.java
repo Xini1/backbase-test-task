@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.domain.Configuration;
 import com.github.xini1.exception.ApiTokenMissing;
+import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.port.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -57,5 +58,17 @@ final class SearchFilmUseCaseTest {
     void givenApiTokenIsEmpty_thenApiTokenMissingThrown() {
         assertThatThrownBy(() -> useCase.search("", "Whatever"))
                 .isInstanceOf(ApiTokenMissing.class);
+    }
+
+    @Test
+    void givenFilmNameIsNull_thenFilmNameRequiredThrown() {
+        assertThatThrownBy(() -> useCase.search("whatever", null))
+                .isInstanceOf(FilmNameRequired.class);
+    }
+
+    @Test
+    void givenFilmNameIsEmpty_thenFilmNameRequiredThrown() {
+        assertThatThrownBy(() -> useCase.search("whatever", ""))
+                .isInstanceOf(FilmNameRequired.class);
     }
 }

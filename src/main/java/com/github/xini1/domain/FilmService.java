@@ -1,6 +1,7 @@
 package com.github.xini1.domain;
 
 import com.github.xini1.exception.ApiTokenMissing;
+import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.port.FilmDescriptions;
 import com.github.xini1.port.SearchFilmUseCase;
 
@@ -22,6 +23,9 @@ final class FilmService implements SearchFilmUseCase {
     public Collection<Response> search(String apiToken, String name) {
         if (apiToken == null || apiToken.isBlank()) {
             throw new ApiTokenMissing();
+        }
+        if (name == null || name.isBlank()) {
+            throw new FilmNameRequired();
         }
         return filmDescriptions.byName(apiToken, name)
                 .stream()
