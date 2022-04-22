@@ -36,5 +36,13 @@ public interface SearchFilmUseCase {
             var response = (Response) o;
             return imdbId.equals(response.imdbId) && name.equals(response.name);
         }
+
+        @Override
+        public String toString() {
+            return "Response{" +
+                    "imdbId='" + imdbId + '\'' +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
     }
 }

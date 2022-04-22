@@ -1,5 +1,6 @@
 package com.github.xini1.domain;
 
+import com.github.xini1.port.FilmDescriptions;
 import com.github.xini1.port.SearchFilmUseCase;
 
 /**
@@ -7,7 +8,13 @@ import com.github.xini1.port.SearchFilmUseCase;
  */
 public final class Configuration {
 
+    private final FilmDescriptions filmDescriptions;
+
+    public Configuration(FilmDescriptions filmDescriptions) {
+        this.filmDescriptions = filmDescriptions;
+    }
+
     public SearchFilmUseCase searchFilmUseCase() {
-        return new FilmService();
+        return new FilmService(filmDescriptions);
     }
 }
