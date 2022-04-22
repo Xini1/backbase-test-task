@@ -9,10 +9,16 @@ final class ResponseStub implements SearchFilmUseCase.Response {
 
     private final String imdbId;
     private final String name;
+    private final boolean wonOscar;
 
     ResponseStub(String imdbId, String name) {
+        this(imdbId, name, false);
+    }
+
+    ResponseStub(String imdbId, String name, boolean wonOscar) {
         this.imdbId = imdbId;
         this.name = name;
+        this.wonOscar = wonOscar;
     }
 
     @Override
@@ -23,5 +29,10 @@ final class ResponseStub implements SearchFilmUseCase.Response {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public boolean isWonOscar() {
+        return wonOscar;
     }
 }

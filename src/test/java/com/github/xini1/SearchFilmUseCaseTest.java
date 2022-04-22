@@ -21,20 +21,22 @@ final class SearchFilmUseCaseTest {
                     Map.of(
                             "id1", "Unique",
                             "id2", "Non unique",
-                            "id3", "Non unique"
+                            "id3", "Non unique",
+                            "id4", "Won Oscar"
                     )
-            )
+            ),
+            new InMemoryOscarWinners("Won Oscar")
     )
             .searchFilmUseCase();
 
     @Test
-    void givenExistingFilmName_thenFilmDescriptionReturned() {
+    void givenExistingFilmName_thenFilmReturned() {
         assertThat(useCase.search("token", "Unique"))
                 .containsOnly(new ResponseStub("id1", "Unique"));
     }
 
     @Test
-    void givenTwoFilmsWithSameNameExist_thenFilmDescriptionsReturned() {
+    void givenTwoFilmsWithSameNameExist_thenFilmsReturned() {
         assertThat(useCase.search("token", "Non unique"))
                 .containsOnly(
                         new ResponseStub("id2", "Non unique"),
@@ -70,5 +72,11 @@ final class SearchFilmUseCaseTest {
     void givenFilmNameIsEmpty_thenFilmNameRequiredThrown() {
         assertThatThrownBy(() -> useCase.search("whatever", ""))
                 .isInstanceOf(FilmNameRequired.class);
+    }
+
+    @Test
+    void givenNameOfFilmWhichWonOscar_thenFilmWhichWonOscarReturned() {
+        assertThat(useCase.search("token", "Won Oscar"))
+                .containsOnly(new ResponseStub("id4", "Won Oscar", true));
     }
 }

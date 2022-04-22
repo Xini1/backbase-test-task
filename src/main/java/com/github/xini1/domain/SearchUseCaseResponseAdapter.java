@@ -11,9 +11,11 @@ import java.util.Objects;
 final class SearchUseCaseResponseAdapter implements SearchFilmUseCase.Response {
 
     private final FilmDescriptions.FilmDescription filmDescription;
+    private final boolean wonOscar;
 
-    SearchUseCaseResponseAdapter(FilmDescriptions.FilmDescription filmDescription) {
+    SearchUseCaseResponseAdapter(FilmDescriptions.FilmDescription filmDescription, boolean wonOscar) {
         this.filmDescription = Objects.requireNonNull(filmDescription);
+        this.wonOscar = wonOscar;
     }
 
     @Override
@@ -24,6 +26,11 @@ final class SearchUseCaseResponseAdapter implements SearchFilmUseCase.Response {
     @Override
     public String name() {
         return filmDescription.name();
+    }
+
+    @Override
+    public boolean isWonOscar() {
+        return wonOscar;
     }
 
     @Override
@@ -38,6 +45,6 @@ final class SearchUseCaseResponseAdapter implements SearchFilmUseCase.Response {
         }
 
         SearchFilmUseCase.Response that = (SearchFilmUseCase.Response) o;
-        return imdbId().equals(that.imdbId()) && name().equals(that.name());
+        return imdbId().equals(that.imdbId()) && name().equals(that.name()) && isWonOscar() == that.isWonOscar();
     }
 }

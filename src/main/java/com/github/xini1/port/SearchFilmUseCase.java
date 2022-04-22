@@ -14,5 +14,7 @@ public interface SearchFilmUseCase {
         String imdbId();
 
         String name();
+
+        boolean isWonOscar();
     }
 }
