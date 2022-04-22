@@ -1,21 +1,21 @@
 package com.github.xini1;
 
-import com.github.xini1.port.SearchFilmUseCase;
+import com.github.xini1.port.FilmDto;
 
 /**
  * @author Maxim Tereshchenko
  */
-final class ResponseStub implements SearchFilmUseCase.Response {
+final class FilmDtoStub implements FilmDto {
 
     private final String imdbId;
     private final String name;
     private final boolean wonOscar;
 
-    ResponseStub(String imdbId, String name) {
+    FilmDtoStub(String imdbId, String name) {
         this(imdbId, name, false);
     }
 
-    ResponseStub(String imdbId, String name, boolean wonOscar) {
+    FilmDtoStub(String imdbId, String name, boolean wonOscar) {
         this.imdbId = imdbId;
         this.name = name;
         this.wonOscar = wonOscar;

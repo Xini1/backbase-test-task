@@ -3,6 +3,7 @@ package com.github.xini1.domain;
 import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.port.FilmDescriptions;
+import com.github.xini1.port.FilmDto;
 import com.github.xini1.port.OscarWinners;
 import com.github.xini1.port.SearchFilmUseCase;
 
@@ -23,7 +24,7 @@ final class FilmService implements SearchFilmUseCase {
     }
 
     @Override
-    public Collection<Response> search(String apiToken, String name) {
+    public Collection<FilmDto> search(String apiToken, String name) {
         if (apiToken == null || apiToken.isBlank()) {
             throw new ApiTokenMissing();
         }
@@ -36,7 +37,7 @@ final class FilmService implements SearchFilmUseCase {
                 .collect(Collectors.toList());
     }
 
-    private SearchUseCaseResponseAdapter response(FilmDescriptions.FilmDescription filmDescription) {
-        return new SearchUseCaseResponseAdapter(filmDescription, oscarWinners.isWinner(filmDescription.name()));
+    private FilmDto response(FilmDescriptions.FilmDescription filmDescription) {
+        return new FilmDtoAdapter(filmDescription, oscarWinners.isWinner(filmDescription.name()));
     }
 }

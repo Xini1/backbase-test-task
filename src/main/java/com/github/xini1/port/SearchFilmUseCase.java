@@ -7,14 +7,5 @@ import java.util.Collection;
  */
 public interface SearchFilmUseCase {
 
-    Collection<Response> search(String apiToken, String name);
-
-    interface Response {
-
-        String imdbId();
-
-        String name();
-
-        boolean isWonOscar();
-    }
+    Collection<FilmDto> search(String apiToken, String name);
 }

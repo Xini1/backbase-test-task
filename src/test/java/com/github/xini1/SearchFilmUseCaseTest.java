@@ -32,15 +32,15 @@ final class SearchFilmUseCaseTest {
     @Test
     void givenExistingFilmName_thenFilmReturned() {
         assertThat(useCase.search("token", "Unique"))
-                .containsOnly(new ResponseStub("id1", "Unique"));
+                .containsOnly(new FilmDtoStub("id1", "Unique"));
     }
 
     @Test
     void givenTwoFilmsWithSameNameExist_thenFilmsReturned() {
         assertThat(useCase.search("token", "Non unique"))
                 .containsOnly(
-                        new ResponseStub("id2", "Non unique"),
-                        new ResponseStub("id3", "Non unique")
+                        new FilmDtoStub("id2", "Non unique"),
+                        new FilmDtoStub("id3", "Non unique")
                 );
     }
 
@@ -77,6 +77,6 @@ final class SearchFilmUseCaseTest {
     @Test
     void givenNameOfFilmWhichWonOscar_thenFilmWhichWonOscarReturned() {
         assertThat(useCase.search("token", "Won Oscar"))
-                .containsOnly(new ResponseStub("id4", "Won Oscar", true));
+                .containsOnly(new FilmDtoStub("id4", "Won Oscar", true));
     }
 }

@@ -1,19 +1,19 @@
 package com.github.xini1.domain;
 
 import com.github.xini1.port.FilmDescriptions;
-import com.github.xini1.port.SearchFilmUseCase;
+import com.github.xini1.port.FilmDto;
 
 import java.util.Objects;
 
 /**
  * @author Maxim Tereshchenko
  */
-final class SearchUseCaseResponseAdapter implements SearchFilmUseCase.Response {
+final class FilmDtoAdapter implements FilmDto {
 
     private final FilmDescriptions.FilmDescription filmDescription;
     private final boolean wonOscar;
 
-    SearchUseCaseResponseAdapter(FilmDescriptions.FilmDescription filmDescription, boolean wonOscar) {
+    FilmDtoAdapter(FilmDescriptions.FilmDescription filmDescription, boolean wonOscar) {
         this.filmDescription = Objects.requireNonNull(filmDescription);
         this.wonOscar = wonOscar;
     }
@@ -40,11 +40,11 @@ final class SearchUseCaseResponseAdapter implements SearchFilmUseCase.Response {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || o.getClass().isAssignableFrom(SearchFilmUseCase.Response.class)) {
+        if (o == null || o.getClass().isAssignableFrom(FilmDto.class)) {
             return false;
         }
 
-        SearchFilmUseCase.Response that = (SearchFilmUseCase.Response) o;
+        FilmDto that = (FilmDto) o;
         return imdbId().equals(that.imdbId()) && name().equals(that.name()) && isWonOscar() == that.isWonOscar();
     }
 }
