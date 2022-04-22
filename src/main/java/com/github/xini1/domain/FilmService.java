@@ -21,11 +21,7 @@ final class FilmService implements SearchFilmUseCase {
     public Collection<Response> search(String apiToken, String name) {
         return filmDescriptions.byName(apiToken, name)
                 .stream()
-                .map(this::response)
+                .map(SearchUseCaseResponseAdapter::new)
                 .collect(Collectors.toList());
-    }
-
-    private Response response(FilmDescriptions.FilmDescription filmDescription) {
-        return new Response(filmDescription.imdbId(), filmDescription.name());
     }
 }

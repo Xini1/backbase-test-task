@@ -27,15 +27,15 @@ final class SearchFilmUseCaseTest {
     @Test
     void givenExistingFilmName_thenFilmDescriptionReturned() {
         assertThat(useCase.search("token", "Unique"))
-                .containsOnly(new SearchFilmUseCase.Response("id1", "Unique"));
+                .containsOnly(new ResponseStub("id1", "Unique"));
     }
 
     @Test
     void givenTwoFilmsWithSameNameExist_thenFilmDescriptionsReturned() {
         assertThat(useCase.search("token", "Non unique"))
                 .containsOnly(
-                        new SearchFilmUseCase.Response("id2", "Non unique"),
-                        new SearchFilmUseCase.Response("id3", "Non unique")
+                        new ResponseStub("id2", "Non unique"),
+                        new ResponseStub("id3", "Non unique")
                 );
     }
 }
