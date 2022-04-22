@@ -9,5 +9,9 @@ public interface FilmDto {
 
     String name();
 
-    boolean isWonOscar();
+    boolean isOscarWinner();
+
+    int rating();
+
+    int boxOffice();
 }

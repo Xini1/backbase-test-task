@@ -11,11 +11,13 @@ import java.util.Objects;
 final class FilmDtoAdapter implements FilmDto {
 
     private final FilmDescriptions.FilmDescription filmDescription;
-    private final boolean wonOscar;
+    private final boolean oscarWinner;
+    private final int rating;
 
-    FilmDtoAdapter(FilmDescriptions.FilmDescription filmDescription, boolean wonOscar) {
+    FilmDtoAdapter(FilmDescriptions.FilmDescription filmDescription, boolean oscarWinner, int rating) {
         this.filmDescription = Objects.requireNonNull(filmDescription);
-        this.wonOscar = wonOscar;
+        this.oscarWinner = oscarWinner;
+        this.rating = rating;
     }
 
     @Override
@@ -29,8 +31,18 @@ final class FilmDtoAdapter implements FilmDto {
     }
 
     @Override
-    public boolean isWonOscar() {
-        return wonOscar;
+    public boolean isOscarWinner() {
+        return oscarWinner;
+    }
+
+    @Override
+    public int rating() {
+        return rating;
+    }
+
+    @Override
+    public int boxOffice() {
+        return filmDescription.boxOffice();
     }
 
     @Override
@@ -45,6 +57,9 @@ final class FilmDtoAdapter implements FilmDto {
         }
 
         FilmDto that = (FilmDto) o;
-        return imdbId().equals(that.imdbId()) && name().equals(that.name()) && isWonOscar() == that.isWonOscar();
+        return imdbId().equals(that.imdbId()) &&
+                name().equals(that.name()) &&
+                isOscarWinner() == that.isOscarWinner() &&
+                rating() == that.rating();
     }
 }

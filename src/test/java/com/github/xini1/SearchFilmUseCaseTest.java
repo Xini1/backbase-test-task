@@ -9,7 +9,7 @@ import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.port.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Maxim Tereshchenko
@@ -18,14 +18,15 @@ final class SearchFilmUseCaseTest {
 
     private final SearchFilmUseCase useCase = new Configuration(
             new InMemoryFilmDescriptions(
-                    Map.of(
-                            "id1", "Unique",
-                            "id2", "Non unique",
-                            "id3", "Non unique",
-                            "id4", "Won Oscar"
+                    Set.of(
+                            new InMemoryFilmDescriptions.Stub("id1", "Unique"),
+                            new InMemoryFilmDescriptions.Stub("id2", "Non unique"),
+                            new InMemoryFilmDescriptions.Stub("id3", "Non unique"),
+                            new InMemoryFilmDescriptions.Stub("id4", "Won Oscar")
                     )
             ),
-            new InMemoryOscarWinners("Won Oscar")
+            new InMemoryOscarWinners("Won Oscar"),
+            new InMemoryRatings()
     )
             .searchFilmUseCase();
 

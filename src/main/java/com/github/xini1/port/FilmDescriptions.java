@@ -9,10 +9,14 @@ public interface FilmDescriptions {
 
     Collection<FilmDescription> byName(String apiToken, String name);
 
+    FilmDescription byId(String apiToken, String imdbId);
+
     interface FilmDescription {
 
         String imdbId();
 
         String name();
+
+        int boxOffice();
     }
 }

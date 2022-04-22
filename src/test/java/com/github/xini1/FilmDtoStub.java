@@ -9,16 +9,24 @@ final class FilmDtoStub implements FilmDto {
 
     private final String imdbId;
     private final String name;
-    private final boolean wonOscar;
+    private final boolean oscarWinner;
+    private final int rating;
+    private final int boxOffice;
 
     FilmDtoStub(String imdbId, String name) {
         this(imdbId, name, false);
     }
 
-    FilmDtoStub(String imdbId, String name, boolean wonOscar) {
+    FilmDtoStub(String imdbId, String name, boolean oscarWinner) {
+        this(imdbId, name, oscarWinner, 0, 0);
+    }
+
+    FilmDtoStub(String imdbId, String name, boolean oscarWinner, int rating, int boxOffice) {
         this.imdbId = imdbId;
         this.name = name;
-        this.wonOscar = wonOscar;
+        this.oscarWinner = oscarWinner;
+        this.rating = rating;
+        this.boxOffice = boxOffice;
     }
 
     @Override
@@ -32,7 +40,17 @@ final class FilmDtoStub implements FilmDto {
     }
 
     @Override
-    public boolean isWonOscar() {
-        return wonOscar;
+    public boolean isOscarWinner() {
+        return oscarWinner;
+    }
+
+    @Override
+    public int rating() {
+        return rating;
+    }
+
+    @Override
+    public int boxOffice() {
+        return boxOffice;
     }
 }
