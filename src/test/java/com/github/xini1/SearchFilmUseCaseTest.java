@@ -22,7 +22,8 @@ final class SearchFilmUseCaseTest {
                             new InMemoryFilmDescriptions.Stub("id1", "Unique"),
                             new InMemoryFilmDescriptions.Stub("id2", "Non unique"),
                             new InMemoryFilmDescriptions.Stub("id3", "Non unique"),
-                            new InMemoryFilmDescriptions.Stub("id4", "Won Oscar")
+                            new InMemoryFilmDescriptions.Stub("id4", "Won Oscar"),
+                            new InMemoryFilmDescriptions.Stub("id5", "Has 10 box office", 10)
                     )
             ),
             new InMemoryOscarWinners("Won Oscar"),
@@ -79,5 +80,13 @@ final class SearchFilmUseCaseTest {
     void givenNameOfFilmWhichWonOscar_thenFilmWhichWonOscarReturned() {
         assertThat(useCase.search("token", "Won Oscar"))
                 .containsOnly(new FilmDtoStub("id4", "Won Oscar", true));
+    }
+
+    @Test
+    void givenNameOfFilmWhichHas10BoxOffice_thenFilmWhichHas10BoxOfficeReturned() {
+        assertThat(useCase.search("token", "Has 10 box office"))
+                .containsOnly(
+                        new FilmDtoStub("id5", "Has 10 box office", false, 0, 10)
+                );
     }
 }
