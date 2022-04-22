@@ -32,4 +32,13 @@ final class RateFilmUseCaseTest {
         assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token"))
                 .containsExactly(new FilmDtoStub("id1", "Rated", false, 10, 0));
     }
+
+    @Test
+    void givenTwoUsersRatedFilm_thenFilmHasAverageOfTwoRating() {
+        rateFilmUseCase.rate("token1", "id1", 10);
+        rateFilmUseCase.rate("token2", "id1", 4);
+
+        assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token1"))
+                .containsExactly(new FilmDtoStub("id1", "Rated", false, 7, 0));
+    }
 }
