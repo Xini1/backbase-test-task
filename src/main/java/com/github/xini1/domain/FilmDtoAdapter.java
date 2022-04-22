@@ -62,4 +62,13 @@ final class FilmDtoAdapter implements FilmDto {
                 isOscarWinner() == that.isOscarWinner() &&
                 rating() == that.rating();
     }
+
+    @Override
+    public String toString() {
+        return "FilmDtoAdapter{" +
+                "filmDescription=" + filmDescription +
+                ", oscarWinner=" + oscarWinner +
+                ", rating=" + rating +
+                '}';
+    }
 }

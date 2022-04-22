@@ -17,7 +17,13 @@ final class RateFilmUseCaseTest {
 
     RateFilmUseCaseTest() {
         var configuration = new Configuration(
-                new InMemoryFilmDescriptions(new InMemoryFilmDescriptions.Stub("id1", "Rated")),
+                new InMemoryFilmDescriptions(
+                        new InMemoryFilmDescriptions.Stub("id1", "Rated1", 1),
+                        new InMemoryFilmDescriptions.Stub("id2", "Rated2", 2),
+                        new InMemoryFilmDescriptions.Stub("id3", "Rated3", 3),
+                        new InMemoryFilmDescriptions.Stub("id4", "Rated4", 4),
+                        new InMemoryFilmDescriptions.Stub("id5", "Unrated")
+                ),
                 new InMemoryOscarWinners(),
                 new InMemoryRatings()
         );
@@ -30,7 +36,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token", "id1", 10);
 
         assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token"))
-                .containsExactly(new FilmDtoStub("id1", "Rated", false, 10, 0));
+                .containsExactly(new FilmDtoStub("id1", "Rated1", false, 10, 4));
     }
 
     @Test
@@ -39,7 +45,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token2", "id1", 4);
 
         assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token1"))
-                .containsExactly(new FilmDtoStub("id1", "Rated", false, 7, 0));
+                .containsExactly(new FilmDtoStub("id1", "Rated1", false, 7, 4));
     }
 
     @Test
@@ -48,6 +54,22 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token2", "id1", 5);
 
         assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token1"))
-                .containsExactly(new FilmDtoStub("id1", "Rated", false, 8, 0));
+                .containsExactly(new FilmDtoStub("id1", "Rated1", false, 8, 4));
+    }
+
+    @Test
+    void givenSeveralRatedFilms_thenFilmsOrderedByBoxOffice() {
+        rateFilmUseCase.rate("token", "id1", 10);
+        rateFilmUseCase.rate("token", "id2", 10);
+        rateFilmUseCase.rate("token", "id3", 10);
+        rateFilmUseCase.rate("token", "id4", 10);
+
+        assertThat(list10TopRatedFilmsUseCase.byBoxOffice("token"))
+                .containsExactly(
+                        new FilmDtoStub("id4", "Rated4", false, 10, 4),
+                        new FilmDtoStub("id3", "Rated3", false, 10, 3),
+                        new FilmDtoStub("id2", "Rated2", false, 10, 2),
+                        new FilmDtoStub("id1", "Rated1", false, 10, 1)
+                );
     }
 }

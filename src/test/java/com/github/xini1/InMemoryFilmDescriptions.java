@@ -14,12 +14,8 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
 
     private final Set<Stub> stubs;
 
-    InMemoryFilmDescriptions(Set<Stub> stubs) {
-        this.stubs = stubs;
-    }
-
-    InMemoryFilmDescriptions(Stub stub) {
-        this(Set.of(stub));
+    InMemoryFilmDescriptions(Stub... stubs) {
+        this.stubs = Set.of(stubs);
     }
 
     @Override
@@ -83,6 +79,15 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
             }
             Stub stub = (Stub) o;
             return imdbId.equals(stub.imdbId);
+        }
+
+        @Override
+        public String toString() {
+            return "Stub{" +
+                    "imdbId='" + imdbId + '\'' +
+                    ", name='" + name + '\'' +
+                    ", boxOffice=" + boxOffice +
+                    '}';
         }
     }
 }

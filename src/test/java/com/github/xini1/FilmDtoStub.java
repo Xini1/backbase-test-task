@@ -53,4 +53,15 @@ final class FilmDtoStub implements FilmDto {
     public int boxOffice() {
         return boxOffice;
     }
+
+    @Override
+    public String toString() {
+        return "FilmDtoStub{" +
+                "imdbId='" + imdbId + '\'' +
+                ", name='" + name + '\'' +
+                ", oscarWinner=" + oscarWinner +
+                ", rating=" + rating +
+                ", boxOffice=" + boxOffice +
+                '}';
+    }
 }

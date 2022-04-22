@@ -51,13 +51,17 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
                 .entrySet()
                 .stream()
                 .map(entry -> filmDto(apiToken, entry))
-                .sorted(Comparator.comparing(FilmDto::boxOffice))
+                .sorted(byBoxOffice())
                 .collect(Collectors.toList());
     }
 
     @Override
     public void rate(String apiToken, String imdbId, int rating) {
         ratings.tryAdd(apiToken, imdbId, rating);
+    }
+
+    private Comparator<FilmDto> byBoxOffice() {
+        return Comparator.comparing(FilmDto::boxOffice).reversed();
     }
 
     private FilmDto filmDto(String apiToken, Map.Entry<String, Integer> entry) {
