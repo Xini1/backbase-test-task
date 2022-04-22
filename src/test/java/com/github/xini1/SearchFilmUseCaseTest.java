@@ -1,8 +1,10 @@
 package com.github.xini1;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.domain.Configuration;
+import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.port.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -37,5 +39,23 @@ final class SearchFilmUseCaseTest {
                         new ResponseStub("id2", "Non unique"),
                         new ResponseStub("id3", "Non unique")
                 );
+    }
+
+    @Test
+    void givenNoFilmWithSuchNameExist_thenEmptyCollectionReturned() {
+        assertThat(useCase.search("token", "Non existent"))
+                .isEmpty();
+    }
+
+    @Test
+    void givenApiTokenIsNull_thenApiTokenMissingThrown() {
+        assertThatThrownBy(() -> useCase.search(null, "Whatever"))
+                .isInstanceOf(ApiTokenMissing.class);
+    }
+
+    @Test
+    void givenApiTokenIsEmpty_thenApiTokenMissingThrown() {
+        assertThatThrownBy(() -> useCase.search("", "Whatever"))
+                .isInstanceOf(ApiTokenMissing.class);
     }
 }
