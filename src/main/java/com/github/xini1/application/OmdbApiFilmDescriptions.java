@@ -51,11 +51,19 @@ final class OmdbApiFilmDescriptions implements FilmDescriptions {
 
         @Override
         public int boxOffice() {
+            if (hasNotBoxOfficeValue()) {
+                return 0;
+            }
+
             return Integer.parseInt(
                     response.boxOffice()
                             .replace("$", "")
                             .replace(",", "")
             );
+        }
+
+        private boolean hasNotBoxOfficeValue() {
+            return response.boxOffice().isBlank() || response.boxOffice().equals("N/A");
         }
     }
 

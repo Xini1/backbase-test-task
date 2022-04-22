@@ -94,6 +94,10 @@ interface OmdbApiFeignClient {
         }
 
         String boxOffice() {
+            if (boxOffice == null) {
+                return "";
+            }
+
             return boxOffice;
         }
     }

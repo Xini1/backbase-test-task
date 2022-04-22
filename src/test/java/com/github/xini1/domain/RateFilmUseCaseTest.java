@@ -22,7 +22,7 @@ final class RateFilmUseCaseTest {
     private final SearchFilmUseCase searchFilmUseCase;
 
     RateFilmUseCaseTest() {
-        var configuration = new Configuration(
+        var configuration = new FilmsModuleConfiguration(
                 new InMemoryFilmDescriptions(
                         new InMemoryFilmDescriptions.Stub("id1", "Rated1", 1),
                         new InMemoryFilmDescriptions.Stub("id2", "Rated2", 2),

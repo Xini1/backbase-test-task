@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
  */
 final class SearchFilmUseCaseTest {
 
-    private final SearchFilmUseCase useCase = new Configuration(
+    private final SearchFilmUseCase useCase = new FilmsModuleConfiguration(
             new InMemoryFilmDescriptions(
                     new InMemoryFilmDescriptions.Stub("id1", "Unique"),
                     new InMemoryFilmDescriptions.Stub("id2", "Non unique"),

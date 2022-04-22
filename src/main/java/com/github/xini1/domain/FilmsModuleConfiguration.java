@@ -10,13 +10,13 @@ import com.github.xini1.port.usecase.SearchFilmUseCase;
 /**
  * @author Maxim Tereshchenko
  */
-public final class Configuration {
+public final class FilmsModuleConfiguration {
 
     private final FilmDescriptions filmDescriptions;
     private final OscarWinners oscarWinners;
     private final Ratings ratings;
 
-    public Configuration(FilmDescriptions filmDescriptions, OscarWinners oscarWinners, Ratings ratings) {
+    public FilmsModuleConfiguration(FilmDescriptions filmDescriptions, OscarWinners oscarWinners, Ratings ratings) {
         this.filmDescriptions = filmDescriptions;
         this.oscarWinners = oscarWinners;
         this.ratings = ratings;
