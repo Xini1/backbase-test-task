@@ -1,4 +1,4 @@
-package com.github.xini1;
+package com.github.xini1.domain;
 
 import com.github.xini1.port.Ratings;
 
@@ -65,7 +65,7 @@ final class InMemoryRatings implements Ratings {
                 .sum();
     }
 
-    private static class Rating {
+    private static final class Rating {
 
         private final String apiToken;
         private final int value;

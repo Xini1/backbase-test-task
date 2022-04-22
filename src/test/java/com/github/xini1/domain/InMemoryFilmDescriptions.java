@@ -1,4 +1,4 @@
-package com.github.xini1;
+package com.github.xini1.domain;
 
 import com.github.xini1.port.FilmDescriptions;
 
@@ -39,7 +39,7 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
                 .noneMatch(stub -> stub.imdbId.equals(imdbId));
     }
 
-    static class Stub implements FilmDescription {
+    static final class Stub implements FilmDescription {
 
         private final String imdbId;
         private final String name;

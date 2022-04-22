@@ -1,4 +1,4 @@
-package com.github.xini1;
+package com.github.xini1.domain;
 
 import com.github.xini1.port.OscarWinners;
 
