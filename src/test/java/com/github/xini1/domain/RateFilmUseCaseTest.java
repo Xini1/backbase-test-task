@@ -133,4 +133,16 @@ final class RateFilmUseCaseTest {
                         )
                 );
     }
+
+    @Test
+    void givenApiTokenINull_whenList10TopRatedFilms_thenApiTokenMissingThrown() {
+        assertThatThrownBy(() -> list10TopRatedFilmsUseCase.top10RatedSortedByBoxOffice(null))
+                .isInstanceOf(ApiTokenMissing.class);
+    }
+
+    @Test
+    void givenApiTokenIEmpty_whenList10TopRatedFilms_thenApiTokenMissingThrown() {
+        assertThatThrownBy(() -> list10TopRatedFilmsUseCase.top10RatedSortedByBoxOffice(""))
+                .isInstanceOf(ApiTokenMissing.class);
+    }
 }

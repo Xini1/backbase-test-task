@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.exception.FilmNameRequired;
+import com.github.xini1.exception.IncorrectPageNumber;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -93,5 +94,11 @@ final class SearchFilmUseCaseTest {
                                 )
                         )
                 );
+    }
+
+    @Test
+    void givenPageNumberIsLower0_thenIncorrectPageNumberThrown() {
+        assertThatThrownBy(() -> useCase.search("whatever", "whatever", -1))
+                .isInstanceOf(IncorrectPageNumber.class);
     }
 }
