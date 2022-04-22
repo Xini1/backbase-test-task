@@ -28,60 +28,70 @@ final class SearchFilmUseCaseTest {
 
     @Test
     void givenExistingFilmName_thenFilmReturned() {
-        assertThat(useCase.search("token", "Unique"))
-                .containsOnly(new FilmDtoStub("id1", "Unique"));
+        assertThat(useCase.search("token", "Unique", 0))
+                .isEqualTo(new PageStub(new FilmDtoStub("id1", "Unique")));
     }
 
     @Test
     void givenTwoFilmsWithSameNameExist_thenFilmsReturned() {
-        assertThat(useCase.search("token", "Non unique"))
-                .containsOnly(
-                        new FilmDtoStub("id2", "Non unique"),
-                        new FilmDtoStub("id3", "Non unique")
+        assertThat(useCase.search("token", "Non unique", 0))
+                .isEqualTo(
+                        new PageStub(
+                                new FilmDtoStub("id2", "Non unique"),
+                                new FilmDtoStub("id3", "Non unique")
+                        )
                 );
     }
 
     @Test
     void givenNoFilmWithSuchNameExist_thenEmptyCollectionReturned() {
-        assertThat(useCase.search("token", "Non existent"))
-                .isEmpty();
+        assertThat(useCase.search("token", "Non existent", 0))
+                .isEqualTo(new EmptyPage());
     }
 
     @Test
     void givenApiTokenIsNull_thenApiTokenMissingThrown() {
-        assertThatThrownBy(() -> useCase.search(null, "Whatever"))
+        assertThatThrownBy(() -> useCase.search(null, "Whatever", 0))
                 .isInstanceOf(ApiTokenMissing.class);
     }
 
     @Test
     void givenApiTokenIsEmpty_thenApiTokenMissingThrown() {
-        assertThatThrownBy(() -> useCase.search("", "Whatever"))
+        assertThatThrownBy(() -> useCase.search("", "Whatever", 0))
                 .isInstanceOf(ApiTokenMissing.class);
     }
 
     @Test
     void givenFilmNameIsNull_thenFilmNameRequiredThrown() {
-        assertThatThrownBy(() -> useCase.search("whatever", null))
+        assertThatThrownBy(() -> useCase.search("whatever", null, 0))
                 .isInstanceOf(FilmNameRequired.class);
     }
 
     @Test
     void givenFilmNameIsEmpty_thenFilmNameRequiredThrown() {
-        assertThatThrownBy(() -> useCase.search("whatever", ""))
+        assertThatThrownBy(() -> useCase.search("whatever", "", 0))
                 .isInstanceOf(FilmNameRequired.class);
     }
 
     @Test
     void givenNameOfFilmWhichWonOscar_thenFilmWhichWonOscarReturned() {
-        assertThat(useCase.search("token", "Won Oscar"))
-                .containsOnly(new FilmDtoStub("id4", "Won Oscar", true));
+        assertThat(useCase.search("token", "Won Oscar", 0))
+                .isEqualTo(new PageStub(new FilmDtoStub("id4", "Won Oscar", true)));
     }
 
     @Test
     void givenNameOfFilmWhichHas10BoxOffice_thenFilmWhichHas10BoxOfficeReturned() {
-        assertThat(useCase.search("token", "Has 10 box office"))
-                .containsOnly(
-                        new FilmDtoStub("id5", "Has 10 box office", false, 0, 10)
+        assertThat(useCase.search("token", "Has 10 box office", 0))
+                .isEqualTo(
+                        new PageStub(
+                                new FilmDtoStub(
+                                        "id5",
+                                        "Has 10 box office",
+                                        false,
+                                        0,
+                                        10
+                                )
+                        )
                 );
     }
 }

@@ -3,13 +3,13 @@ package com.github.xini1.domain;
 import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.exception.ImdbIdRequired;
+import com.github.xini1.exception.IncorrectPageNumber;
 import com.github.xini1.exception.IncorrectRating;
 import com.github.xini1.port.usecase.FilmDto;
 import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,14 +24,17 @@ final class ValidatingFilmService implements SearchFilmUseCase, RateFilmUseCase,
     }
 
     @Override
-    public Collection<FilmDto> search(String apiToken, String name) {
+    public Page search(String apiToken, String name, int pageNumber) {
         if (apiToken == null || apiToken.isBlank()) {
             throw new ApiTokenMissing();
         }
         if (name == null || name.isBlank()) {
             throw new FilmNameRequired();
         }
-        return original.search(apiToken, name);
+        if (pageNumber < 0) {
+            throw new IncorrectPageNumber();
+        }
+        return original.search(apiToken, name, pageNumber);
     }
 
     @Override

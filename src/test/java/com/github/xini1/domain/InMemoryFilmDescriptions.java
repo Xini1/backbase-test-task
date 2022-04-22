@@ -3,6 +3,7 @@ package com.github.xini1.domain;
 import com.github.xini1.port.FilmDescriptions;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,10 +20,8 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
     }
 
     @Override
-    public Collection<FilmDescription> byName(String apiToken, String name) {
-        return stubs.stream()
-                .filter(stub -> stub.name.equals(name))
-                .collect(Collectors.toList());
+    public Page byName(String apiToken, String name, int pageNumber) {
+        return new StubsPage(stubs(name), pageNumber);
     }
 
     @Override
@@ -37,6 +36,12 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
     public boolean isNotExists(String apiToken, String imdbId) {
         return stubs.stream()
                 .noneMatch(stub -> stub.imdbId.equals(imdbId));
+    }
+
+    private List<Stub> stubs(String name) {
+        return stubs.stream()
+                .filter(stub -> stub.name.equals(name))
+                .collect(Collectors.toList());
     }
 
     static final class Stub implements FilmDescription {
@@ -94,6 +99,43 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
                     ", name='" + name + '\'' +
                     ", boxOffice=" + boxOffice +
                     '}';
+        }
+    }
+
+    private static final class StubsPage implements Page {
+
+        private final Collection<Stub> allFoundStubs;
+        private final int pageNumber;
+
+        private StubsPage(Collection<Stub> allFoundStubs, int pageNumber) {
+            this.allFoundStubs = allFoundStubs;
+            this.pageNumber = pageNumber;
+        }
+
+        @Override
+        public Collection<FilmDescription> filmDescriptions() {
+            return allFoundStubs.stream()
+                    .skip(10L * pageNumber)
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
+
+        @Override
+        public int page() {
+            return pageNumber;
+        }
+
+        @Override
+        public int totalPages() {
+            return allFoundStubs.size() / 10 + accountForLastPage();
+        }
+
+        private int accountForLastPage() {
+            if (allFoundStubs.size() % 10 == 0) {
+                return 0;
+            }
+
+            return 1;
         }
     }
 }

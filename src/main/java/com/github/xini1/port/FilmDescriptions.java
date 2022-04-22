@@ -7,7 +7,7 @@ import java.util.Collection;
  */
 public interface FilmDescriptions {
 
-    Collection<FilmDescription> byName(String apiToken, String name);
+    Page byName(String apiToken, String name, int pageNumber);
 
     FilmDescription byId(String apiToken, String imdbId);
 
@@ -20,5 +20,14 @@ public interface FilmDescriptions {
         String name();
 
         int boxOffice();
+    }
+
+    interface Page {
+
+        Collection<FilmDescription> filmDescriptions();
+
+        int page();
+
+        int totalPages();
     }
 }

@@ -37,7 +37,7 @@ public abstract class FilmDto {
 
     @Override
     public String toString() {
-        return "FilmDtoAdapter{" +
+        return "FilmDto{" +
                 "imdbId=" + imdbId() +
                 ", name=" + name() +
                 ", isOscarWinner=" + isOscarWinner() +

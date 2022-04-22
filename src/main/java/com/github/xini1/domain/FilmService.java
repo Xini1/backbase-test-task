@@ -31,11 +31,8 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
     }
 
     @Override
-    public Collection<FilmDto> search(String apiToken, String name) {
-        return filmDescriptions.byName(apiToken, name)
-                .stream()
-                .map(this::filmDto)
-                .collect(Collectors.toList());
+    public Page search(String apiToken, String name, int pageNumber) {
+        return page(filmDescriptions.byName(apiToken, name, pageNumber));
     }
 
     @Override
@@ -54,6 +51,28 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
             throw new FilmNotFound();
         }
         ratings.tryAdd(apiToken, imdbId, rating);
+    }
+
+    private Page page(FilmDescriptions.Page filmDescriptionsPage) {
+        return new Page() {
+            @Override
+            public Collection<FilmDto> films() {
+                return filmDescriptionsPage.filmDescriptions()
+                        .stream()
+                        .map(filmDescription -> filmDto(filmDescription))
+                        .collect(Collectors.toList());
+            }
+
+            @Override
+            public int page() {
+                return filmDescriptionsPage.page();
+            }
+
+            @Override
+            public int totalPages() {
+                return filmDescriptionsPage.totalPages();
+            }
+        };
     }
 
     private Comparator<FilmDto> byBoxOffice() {

@@ -126,7 +126,11 @@ final class RateFilmUseCaseTest {
     void givenUserRatedFilm_thenFilmHasExactRatingInSearchResult() {
         rateFilmUseCase.rate("token", "id1", 10);
 
-        assertThat(searchFilmUseCase.search("token", "Rated1"))
-                .containsExactly(new FilmDtoStub("id1", "Rated1", false, 10, 4));
+        assertThat(searchFilmUseCase.search("token", "Rated1", 0))
+                .isEqualTo(
+                        new PageStub(
+                                new FilmDtoStub("id1", "Rated1", false, 10, 4)
+                        )
+                );
     }
 }
