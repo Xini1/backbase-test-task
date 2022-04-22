@@ -1,4 +1,4 @@
-package com.github.xini1.port;
+package com.github.xini1.port.usecase;
 
 import java.util.List;
 
@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface List10TopRatedFilmsUseCase {
 
-    List<FilmDto> byBoxOffice(String apiToken);
+    List<FilmDto> top10RatedSortedByBoxOffice(String apiToken);
 }

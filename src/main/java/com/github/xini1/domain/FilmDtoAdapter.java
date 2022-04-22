@@ -1,7 +1,7 @@
 package com.github.xini1.domain;
 
 import com.github.xini1.port.FilmDescriptions;
-import com.github.xini1.port.FilmDto;
+import com.github.xini1.port.usecase.FilmDto;
 
 import java.util.Objects;
 

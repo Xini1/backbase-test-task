@@ -33,6 +33,12 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
                 .orElseThrow();
     }
 
+    @Override
+    public boolean isNotExists(String apiToken, String imdbId) {
+        return stubs.stream()
+                .noneMatch(stub -> stub.imdbId.equals(imdbId));
+    }
+
     static class Stub implements FilmDescription {
 
         private final String imdbId;

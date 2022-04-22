@@ -1,11 +1,11 @@
 package com.github.xini1.domain;
 
 import com.github.xini1.port.FilmDescriptions;
-import com.github.xini1.port.List10TopRatedFilmsUseCase;
 import com.github.xini1.port.OscarWinners;
-import com.github.xini1.port.RateFilmUseCase;
 import com.github.xini1.port.Ratings;
-import com.github.xini1.port.SearchFilmUseCase;
+import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.RateFilmUseCase;
+import com.github.xini1.port.usecase.SearchFilmUseCase;
 
 /**
  * @author Maxim Tereshchenko
@@ -23,14 +23,18 @@ public final class Configuration {
     }
 
     public SearchFilmUseCase searchFilmUseCase() {
-        return new FilmService(filmDescriptions, oscarWinners, ratings);
+        return service();
     }
 
     public RateFilmUseCase rateFilmUseCase() {
-        return new FilmService(filmDescriptions, oscarWinners, ratings);
+        return service();
     }
 
     public List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase() {
-        return new FilmService(filmDescriptions, oscarWinners, ratings);
+        return service();
+    }
+
+    private ValidatingFilmService service() {
+        return new ValidatingFilmService(new FilmService(filmDescriptions, oscarWinners, ratings));
     }
 }

@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.xini1.domain.Configuration;
 import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.exception.FilmNameRequired;
-import com.github.xini1.port.SearchFilmUseCase;
+import com.github.xini1.port.usecase.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
 /**

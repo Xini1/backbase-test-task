@@ -1,14 +1,13 @@
 package com.github.xini1.domain;
 
-import com.github.xini1.exception.ApiTokenMissing;
-import com.github.xini1.exception.FilmNameRequired;
+import com.github.xini1.exception.FilmNotFound;
 import com.github.xini1.port.FilmDescriptions;
-import com.github.xini1.port.FilmDto;
-import com.github.xini1.port.List10TopRatedFilmsUseCase;
 import com.github.xini1.port.OscarWinners;
-import com.github.xini1.port.RateFilmUseCase;
 import com.github.xini1.port.Ratings;
-import com.github.xini1.port.SearchFilmUseCase;
+import com.github.xini1.port.usecase.FilmDto;
+import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.RateFilmUseCase;
+import com.github.xini1.port.usecase.SearchFilmUseCase;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -33,12 +32,6 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
 
     @Override
     public Collection<FilmDto> search(String apiToken, String name) {
-        if (apiToken == null || apiToken.isBlank()) {
-            throw new ApiTokenMissing();
-        }
-        if (name == null || name.isBlank()) {
-            throw new FilmNameRequired();
-        }
         return filmDescriptions.byName(apiToken, name)
                 .stream()
                 .map(this::filmDto)
@@ -46,7 +39,7 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
     }
 
     @Override
-    public List<FilmDto> byBoxOffice(String apiToken) {
+    public List<FilmDto> top10RatedSortedByBoxOffice(String apiToken) {
         return ratings.top10()
                 .entrySet()
                 .stream()
@@ -57,6 +50,9 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
 
     @Override
     public void rate(String apiToken, String imdbId, int rating) {
+        if (filmDescriptions.isNotExists(apiToken, imdbId)) {
+            throw new FilmNotFound();
+        }
         ratings.tryAdd(apiToken, imdbId, rating);
     }
 

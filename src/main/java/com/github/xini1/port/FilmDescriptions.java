@@ -11,6 +11,8 @@ public interface FilmDescriptions {
 
     FilmDescription byId(String apiToken, String imdbId);
 
+    boolean isNotExists(String apiToken, String imdbId);
+
     interface FilmDescription {
 
         String imdbId();

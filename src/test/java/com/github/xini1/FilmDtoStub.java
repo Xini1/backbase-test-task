@@ -1,6 +1,6 @@
 package com.github.xini1;
 
-import com.github.xini1.port.FilmDto;
+import com.github.xini1.port.usecase.FilmDto;
 
 /**
  * @author Maxim Tereshchenko
