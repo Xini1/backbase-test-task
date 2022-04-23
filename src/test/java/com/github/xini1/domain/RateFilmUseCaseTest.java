@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.InMemoryFilmDescriptions;
-import com.github.xini1.exception.ApiTokenMissing;
+import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNotFound;
 import com.github.xini1.exception.ImdbIdRequired;
 import com.github.xini1.exception.IncorrectRating;
@@ -82,15 +82,15 @@ final class RateFilmUseCaseTest {
     }
 
     @Test
-    void givenApiTokenIsNull_thenApiTokenMissingThrown() {
+    void givenApiTokenIsNull_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() -> rateFilmUseCase.rate(null, "whatever", 1))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
-    void givenApiTokenIsEmpty_thenApiTokenMissingThrown() {
+    void givenApiTokenIsEmpty_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() -> rateFilmUseCase.rate("", "whatever", 1))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
@@ -136,14 +136,14 @@ final class RateFilmUseCaseTest {
     }
 
     @Test
-    void givenApiTokenINull_whenList10TopRatedFilms_thenApiTokenMissingThrown() {
+    void givenApiTokenINull_whenList10TopRatedFilms_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() -> list10TopRatedFilmsUseCase.top10RatedSortedByBoxOffice(null))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
-    void givenApiTokenIEmpty_whenList10TopRatedFilms_thenApiTokenMissingThrown() {
+    void givenApiTokenIEmpty_whenList10TopRatedFilms_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() -> list10TopRatedFilmsUseCase.top10RatedSortedByBoxOffice(""))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 }

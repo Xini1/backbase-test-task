@@ -48,7 +48,7 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
     @Override
     public void rate(String apiToken, String imdbId, int rating) {
         if (filmDescriptions.isNotExists(apiToken, imdbId)) {
-            throw new FilmNotFound();
+            throw new FilmNotFound(imdbId);
         }
         ratings.tryAdd(apiToken, imdbId, rating);
     }

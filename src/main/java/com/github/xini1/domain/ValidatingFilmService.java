@@ -1,6 +1,6 @@
 package com.github.xini1.domain;
 
-import com.github.xini1.exception.ApiTokenMissing;
+import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.exception.ImdbIdRequired;
 import com.github.xini1.exception.IncorrectPageNumber;
@@ -26,7 +26,7 @@ final class ValidatingFilmService implements SearchFilmUseCase, RateFilmUseCase,
     @Override
     public Page search(String apiToken, String name, int pageNumber) {
         if (apiToken == null || apiToken.isBlank()) {
-            throw new ApiTokenMissing();
+            throw new ApiTokenRequired();
         }
         if (name == null || name.isBlank()) {
             throw new FilmNameRequired();
@@ -40,7 +40,7 @@ final class ValidatingFilmService implements SearchFilmUseCase, RateFilmUseCase,
     @Override
     public List<FilmDto> top10RatedSortedByBoxOffice(String apiToken) {
         if (apiToken == null || apiToken.isBlank()) {
-            throw new ApiTokenMissing();
+            throw new ApiTokenRequired();
         }
         return original.top10RatedSortedByBoxOffice(apiToken);
     }
@@ -48,7 +48,7 @@ final class ValidatingFilmService implements SearchFilmUseCase, RateFilmUseCase,
     @Override
     public void rate(String apiToken, String imdbId, int rating) {
         if (apiToken == null || apiToken.isBlank()) {
-            throw new ApiTokenMissing();
+            throw new ApiTokenRequired();
         }
         if (imdbId == null || imdbId.isBlank()) {
             throw new ImdbIdRequired();

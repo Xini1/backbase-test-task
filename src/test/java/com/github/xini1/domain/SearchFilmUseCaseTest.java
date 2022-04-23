@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.InMemoryFilmDescriptions;
-import com.github.xini1.exception.ApiTokenMissing;
+import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.exception.IncorrectPageNumber;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
@@ -54,13 +54,13 @@ final class SearchFilmUseCaseTest {
     @Test
     void givenApiTokenIsNull_thenApiTokenMissingThrown() {
         assertThatThrownBy(() -> useCase.search(null, "Whatever", 0))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
     void givenApiTokenIsEmpty_thenApiTokenMissingThrown() {
         assertThatThrownBy(() -> useCase.search("", "Whatever", 0))
-                .isInstanceOf(ApiTokenMissing.class);
+                .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
