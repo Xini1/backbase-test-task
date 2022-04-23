@@ -5,12 +5,9 @@ import com.github.xini1.port.OscarWinners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
@@ -18,23 +15,10 @@ import java.util.Objects;
  */
 final class OscarWinnersFromFile implements OscarWinners {
 
-    private final Path path;
+    private final String fileName;
 
-    OscarWinnersFromFile(Path path) {
-        this.path = path;
-    }
-
-    OscarWinnersFromFile(String fileName) throws URISyntaxException {
-        this(
-                Paths.get(
-                        Objects.requireNonNull(
-                                        Thread.currentThread()
-                                                .getContextClassLoader()
-                                                .getResource(fileName)
-                                )
-                                .toURI()
-                )
-        );
+    OscarWinnersFromFile(String fileName) {
+        this.fileName = fileName;
     }
 
     @Override
@@ -50,8 +34,12 @@ final class OscarWinnersFromFile implements OscarWinners {
         }
     }
 
-    private BufferedReader reader() throws IOException {
-        return new BufferedReader(new InputStreamReader(Files.newInputStream(path), StandardCharsets.UTF_8));
+    private BufferedReader reader() {
+        return new BufferedReader(new InputStreamReader(inputStream(), StandardCharsets.UTF_8));
+    }
+
+    private InputStream inputStream() {
+        return Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
     }
 
     private static final class OscarNomination {

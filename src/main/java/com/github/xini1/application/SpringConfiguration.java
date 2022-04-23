@@ -5,8 +5,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.URISyntaxException;
-
 /**
  * @author Maxim Tereshchenko
  */
@@ -15,7 +13,7 @@ import java.net.URISyntaxException;
 public class SpringConfiguration {
 
     @Bean
-    ApplicationController applicationController(OmdbApiFeignClient omdbApiFeignClient) throws URISyntaxException {
+    ApplicationController applicationController(OmdbApiFeignClient omdbApiFeignClient) {
         var configuration = new FilmsModuleConfiguration(
                 new OmdbApiFilmDescriptions(omdbApiFeignClient),
                 new OscarWinnersFromFile("academy_awards.csv"),

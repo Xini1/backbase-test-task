@@ -6,8 +6,6 @@ import com.github.xini1.port.OscarWinners;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-
 /**
  * @author Maxim Tereshchenko
  */
@@ -16,7 +14,7 @@ final class OscarWinnersFromFileTest {
     private OscarWinners oscarWinners;
 
     @BeforeEach
-    void setUp() throws URISyntaxException {
+    void setUp() {
         oscarWinners = new OscarWinnersFromFile("academy_awards.csv");
     }
 

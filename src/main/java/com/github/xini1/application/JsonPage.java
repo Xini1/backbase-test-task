@@ -3,6 +3,7 @@ package com.github.xini1.application;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +19,7 @@ public class JsonPage {
         films = page.films()
                 .stream()
                 .map(JsonFilmDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.collectingAndThen(Collectors.toList(), List::copyOf));
         this.page = page.page();
         totalPages = page.totalPages();
     }
