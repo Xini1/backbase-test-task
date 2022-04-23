@@ -30,7 +30,8 @@ public interface SearchFilmUseCase {
             }
 
             Page that = (Page) obj;
-            return films().equals(that.films()) &&
+
+            return equalsIgnoreOrder(films(), that.films()) &&
                     page() == that.page() &&
                     totalPages() == that.totalPages();
         }
@@ -42,6 +43,14 @@ public interface SearchFilmUseCase {
                     ", page=" + page() +
                     ", totalPages=" + totalPages() +
                     '}';
+        }
+
+        private boolean equalsIgnoreOrder(Collection<FilmDto> first, Collection<FilmDto> second) {
+            if (first.size() != second.size()) {
+                return false;
+            }
+
+            return second.containsAll(first);
         }
     }
 }

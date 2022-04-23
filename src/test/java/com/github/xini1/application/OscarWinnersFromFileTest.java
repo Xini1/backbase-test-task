@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  */
 final class OscarWinnersFromFileTest {
 
-    private OscarWinners oscarWinners = new OscarWinnersFromFile("academy_awards.csv");
+    private final OscarWinners oscarWinners = new OscarWinnersFromFile("academy_awards.csv");
 
     @Test
     void givenUpIsNotOscarWinner_thenFalse() {

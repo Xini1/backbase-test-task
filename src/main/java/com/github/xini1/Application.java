@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableAutoConfiguration
 @Import(SpringConfiguration.class)
-class Application {
+public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

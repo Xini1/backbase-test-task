@@ -1,4 +1,4 @@
-package com.github.xini1.domain;
+package com.github.xini1;
 
 import com.github.xini1.port.FilmDescriptions;
 
@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 /**
  * @author Maxim Tereshchenko
  */
-final class InMemoryFilmDescriptions implements FilmDescriptions {
+public final class InMemoryFilmDescriptions implements FilmDescriptions {
 
     private final Set<Stub> stubs;
 
-    InMemoryFilmDescriptions(Stub... stubs) {
+    public InMemoryFilmDescriptions(Stub... stubs) {
         this.stubs = Set.of(stubs);
     }
 
@@ -44,17 +44,17 @@ final class InMemoryFilmDescriptions implements FilmDescriptions {
                 .collect(Collectors.toList());
     }
 
-    static final class Stub implements FilmDescription {
+    public static final class Stub implements FilmDescription {
 
         private final String imdbId;
         private final String name;
         private final int boxOffice;
 
-        Stub(String imdbId, String name) {
+        public Stub(String imdbId, String name) {
             this(imdbId, name, 0);
         }
 
-        Stub(String imdbId, String name, int boxOffice) {
+        public Stub(String imdbId, String name, int boxOffice) {
             this.imdbId = imdbId;
             this.name = name;
             this.boxOffice = boxOffice;

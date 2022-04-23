@@ -3,6 +3,7 @@ package com.github.xini1.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.github.xini1.InMemoryFilmDescriptions;
 import com.github.xini1.exception.ApiTokenMissing;
 import com.github.xini1.exception.FilmNotFound;
 import com.github.xini1.exception.ImdbIdRequired;

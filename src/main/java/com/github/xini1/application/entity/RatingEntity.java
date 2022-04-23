@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Maxim Tereshchenko
@@ -65,6 +66,23 @@ public class RatingEntity {
 
         public void setImdbId(String imdbId) {
             this.imdbId = imdbId;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(apiToken, imdbId);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            var that = (CompositeKey) o;
+            return apiToken.equals(that.apiToken) && imdbId.equals(that.imdbId);
         }
     }
 }

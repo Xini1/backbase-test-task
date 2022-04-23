@@ -2,10 +2,12 @@ package com.github.xini1.application;
 
 import com.github.xini1.application.entity.RatingEntity;
 import com.github.xini1.domain.FilmsModuleConfiguration;
+import com.github.xini1.port.FilmDescriptions;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -19,11 +21,11 @@ public class SpringConfiguration {
 
     @Bean
     ApplicationController applicationController(
-            OmdbApiFeignClient omdbApiFeignClient,
+            FilmDescriptions filmDescriptions,
             RatingsRepository ratingsRepository
     ) {
         var configuration = new FilmsModuleConfiguration(
-                new OmdbApiFilmDescriptions(omdbApiFeignClient),
+                filmDescriptions,
                 new OscarWinnersFromFile("academy_awards.csv"),
                 new SpringDataRatings(ratingsRepository)
         );
@@ -33,5 +35,11 @@ public class SpringConfiguration {
                 configuration.rateFilmUseCase(),
                 configuration.list10TopRatedFilmsUseCase()
         );
+    }
+
+    @Bean
+    @Profile("!test")
+    FilmDescriptions filmDescriptions(OmdbApiFeignClient omdbApiFeignClient) {
+        return new OmdbApiFilmDescriptions(omdbApiFeignClient);
     }
 }
