@@ -1,4 +1,4 @@
-package com.github.xini1.application;
+package com.github.xini1.application.dto;
 
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
@@ -15,7 +15,7 @@ public class JsonPage {
     private final int page;
     private final int totalPages;
 
-    JsonPage(SearchFilmUseCase.Page page) {
+    public JsonPage(SearchFilmUseCase.Page page) {
         films = page.films()
                 .stream()
                 .map(JsonFilmDto::new)

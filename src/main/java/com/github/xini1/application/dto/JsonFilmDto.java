@@ -1,4 +1,4 @@
-package com.github.xini1.application;
+package com.github.xini1.application.dto;
 
 import com.github.xini1.port.usecase.FilmDto;
 
@@ -13,7 +13,7 @@ public class JsonFilmDto {
     private final int rating;
     private final int boxOffice;
 
-    JsonFilmDto(FilmDto filmDto) {
+    public JsonFilmDto(FilmDto filmDto) {
         imdbId = filmDto.imdbId();
         name = filmDto.name();
         oscarWinner = filmDto.isOscarWinner();

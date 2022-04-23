@@ -1,5 +1,7 @@
 package com.github.xini1.application;
 
+import com.github.xini1.application.dto.JsonFilmDto;
+import com.github.xini1.application.dto.JsonPage;
 import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;

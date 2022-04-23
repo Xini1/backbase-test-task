@@ -3,7 +3,6 @@ package com.github.xini1.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.xini1.port.OscarWinners;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,12 +10,7 @@ import org.junit.jupiter.api.Test;
  */
 final class OscarWinnersFromFileTest {
 
-    private OscarWinners oscarWinners;
-
-    @BeforeEach
-    void setUp() {
-        oscarWinners = new OscarWinnersFromFile("academy_awards.csv");
-    }
+    private OscarWinners oscarWinners = new OscarWinnersFromFile("academy_awards.csv");
 
     @Test
     void givenUpIsNotOscarWinner_thenFalse() {
@@ -24,7 +18,7 @@ final class OscarWinnersFromFileTest {
     }
 
     @Test
-    void givenSlumdogMillionaireIsOScarWinner_thenTrue() {
+    void givenSlumdogMillionaireIsOscarWinner_thenTrue() {
         assertThat(oscarWinners.isWinner("Slumdog Millionaire")).isTrue();
     }
 }
