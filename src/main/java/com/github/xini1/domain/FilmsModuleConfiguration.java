@@ -23,18 +23,18 @@ public final class FilmsModuleConfiguration {
     }
 
     public SearchFilmUseCase searchFilmUseCase() {
-        return service();
+        return new ValidatingSearchFilmUseCase(service());
     }
 
     public RateFilmUseCase rateFilmUseCase() {
-        return service();
+        return new ValidatingRateFilmUseCase(service());
     }
 
     public List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase() {
-        return service();
+        return new ValidatingList10TopRatedFilmsUseCase(service());
     }
 
-    private ValidatingFilmService service() {
-        return new ValidatingFilmService(new FilmService(filmDescriptions, oscarWinners, ratings));
+    private FilmService service() {
+        return new FilmService(filmDescriptions, oscarWinners, ratings);
     }
 }

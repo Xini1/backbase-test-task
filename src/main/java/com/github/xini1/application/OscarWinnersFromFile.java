@@ -1,6 +1,5 @@
 package com.github.xini1.application;
 
-import com.github.xini1.exception.CouldNotDetermineOscarWinner;
 import com.github.xini1.port.OscarWinners;
 
 import java.io.BufferedReader;
@@ -60,6 +59,13 @@ final class OscarWinnersFromFile implements OscarWinners {
 
         boolean isWinner() {
             return raw.contains("YES");
+        }
+    }
+
+    public static final class CouldNotDetermineOscarWinner extends RuntimeException {
+
+        public CouldNotDetermineOscarWinner(Throwable cause) {
+            super(cause);
         }
     }
 }
