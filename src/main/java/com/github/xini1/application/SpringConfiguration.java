@@ -3,6 +3,7 @@ package com.github.xini1.application;
 import com.github.xini1.application.entity.RatingEntity;
 import com.github.xini1.domain.FilmsModuleConfiguration;
 import com.github.xini1.port.FilmDescriptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +23,12 @@ public class SpringConfiguration {
     @Bean
     ApplicationController applicationController(
             FilmDescriptions filmDescriptions,
-            RatingsRepository ratingsRepository
+            RatingsRepository ratingsRepository,
+            @Value("${oscar-winners-file-name}") String fileName
     ) {
         var configuration = new FilmsModuleConfiguration(
                 filmDescriptions,
-                new OscarWinnersFromFile("academy_awards.csv"),
+                new OscarWinnersFromFile(fileName),
                 new SpringDataRatings(ratingsRepository)
         );
 

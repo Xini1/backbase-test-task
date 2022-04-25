@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Maxim Tereshchenko
  */
-@FeignClient(name = "omdbapi", url = "http://www.omdbapi.com/")
+@FeignClient(name = "omdbapi", url = "${omdb-api-url}")
 interface OmdbApiFeignClient {
 
     @GetMapping
@@ -94,11 +95,7 @@ interface OmdbApiFeignClient {
         }
 
         String boxOffice() {
-            if (boxOffice == null) {
-                return "";
-            }
-
-            return boxOffice;
+            return Objects.requireNonNullElse(boxOffice, "");
         }
     }
 }

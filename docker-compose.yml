@@ -17,3 +17,8 @@ services:
       - database
     ports:
       - '8080:8080'
+    volumes:
+      - './academy_awards.csv:/var/run/academy_awards.csv'
+    environment:
+      oscar-winners-file-name: /var/run/academy_awards.csv
+      omdb-api-url: http://www.omdbapi.com/
