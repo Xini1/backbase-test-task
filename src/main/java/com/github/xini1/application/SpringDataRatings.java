@@ -20,7 +20,7 @@ final class SpringDataRatings implements Ratings {
     }
 
     @Override
-    public void tryAdd(String apiToken, String imdbId, int rating) {
+    public void add(String apiToken, String imdbId, int rating) {
         var ratingEntity = new RatingEntity();
         ratingEntity.setApiToken(apiToken);
         ratingEntity.setImdbId(imdbId);
@@ -29,10 +29,8 @@ final class SpringDataRatings implements Ratings {
     }
 
     @Override
-    public Map<String, Integer> top10() {
-        return ratingsRepository.sortedByRating(PageRequest.of(0, 10))
-                .stream()
-                .collect(toMap());
+    public Page top(int page, int elementsOnPage) {
+        return page(ratingsRepository.sortedByRating(PageRequest.of(page, elementsOnPage)));
     }
 
     @Override
@@ -40,6 +38,26 @@ final class SpringDataRatings implements Ratings {
         return ratingsRepository.average(imdbId)
                 .map(Math::round)
                 .orElse(0);
+    }
+
+    private Page page(org.springframework.data.domain.Page<RatingsRepository.TopRatedProjection> page) {
+        return new Page() {
+            @Override
+            public Map<String, Integer> imdbIdToRating() {
+                return page.stream()
+                        .collect(toMap());
+            }
+
+            @Override
+            public int page() {
+                return page.getNumber();
+            }
+
+            @Override
+            public int totalPages() {
+                return page.getTotalPages();
+            }
+        };
     }
 
     private Collector<RatingsRepository.TopRatedProjection, ?, Map<String, Integer>> toMap() {

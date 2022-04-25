@@ -1,8 +1,7 @@
 package com.github.xini1.application;
 
-import com.github.xini1.application.dto.JsonFilmDto;
 import com.github.xini1.application.dto.JsonPage;
-import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.ListTopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * @author Maxim Tereshchenko
  */
@@ -26,16 +22,16 @@ class ApplicationController {
 
     private final SearchFilmUseCase searchFilmUseCase;
     private final RateFilmUseCase rateFilmUseCase;
-    private final List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase;
+    private final ListTopRatedFilmsUseCase listTopRatedFilmsUseCase;
 
     ApplicationController(
             SearchFilmUseCase searchFilmUseCase,
             RateFilmUseCase rateFilmUseCase,
-            List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase
+            ListTopRatedFilmsUseCase listTopRatedFilmsUseCase
     ) {
         this.searchFilmUseCase = searchFilmUseCase;
         this.rateFilmUseCase = rateFilmUseCase;
-        this.list10TopRatedFilmsUseCase = list10TopRatedFilmsUseCase;
+        this.listTopRatedFilmsUseCase = listTopRatedFilmsUseCase;
     }
 
     @GetMapping
@@ -49,10 +45,7 @@ class ApplicationController {
     }
 
     @GetMapping("/top")
-    List<JsonFilmDto> top(@RequestHeader String apiToken) {
-        return list10TopRatedFilmsUseCase.top10RatedSortedByBoxOffice(apiToken)
-                .stream()
-                .map(JsonFilmDto::new)
-                .collect(Collectors.toList());
+    JsonPage top(@RequestHeader String apiToken, @RequestParam int page, @RequestParam int elements) {
+        return new JsonPage(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice(apiToken, page, elements));
     }
 }

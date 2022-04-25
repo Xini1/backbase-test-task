@@ -5,20 +5,20 @@ import com.github.xini1.port.FilmDescriptions;
 import com.github.xini1.port.OscarWinners;
 import com.github.xini1.port.Ratings;
 import com.github.xini1.port.usecase.FilmDto;
-import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.ListTopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.Page;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @author Maxim Tereshchenko
  */
-final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10TopRatedFilmsUseCase {
+final class FilmService implements SearchFilmUseCase, RateFilmUseCase, ListTopRatedFilmsUseCase {
 
     private final FilmDescriptions filmDescriptions;
     private final OscarWinners oscarWinners;
@@ -31,18 +31,13 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
     }
 
     @Override
-    public Page search(String apiToken, String name, int pageNumber) {
-        return page(filmDescriptions.byName(apiToken, name, pageNumber));
+    public Page search(String apiToken, String name, int page) {
+        return page(filmDescriptions.byName(apiToken, name, page));
     }
 
     @Override
-    public List<FilmDto> top10RatedSortedByBoxOffice(String apiToken) {
-        return ratings.top10()
-                .entrySet()
-                .stream()
-                .map(entry -> filmDto(apiToken, entry))
-                .sorted(byBoxOffice())
-                .collect(Collectors.toList());
+    public Page topRatedSortedByBoxOffice(String apiToken, int page, int elementsOnPage) {
+        return new TopRatedFilmsPage(ratings.top(page, elementsOnPage), apiToken);
     }
 
     @Override
@@ -50,7 +45,7 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
         if (filmDescriptions.isNotExists(apiToken, imdbId)) {
             throw new FilmNotFound(imdbId);
         }
-        ratings.tryAdd(apiToken, imdbId, rating);
+        ratings.add(apiToken, imdbId, rating);
     }
 
     private Page page(FilmDescriptions.Page filmDescriptionsPage) {
@@ -75,15 +70,6 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
         };
     }
 
-    private Comparator<FilmDto> byBoxOffice() {
-        return Comparator.comparing(FilmDto::boxOffice).reversed();
-    }
-
-    private FilmDto filmDto(String apiToken, Map.Entry<String, Integer> entry) {
-        var filmDescription = filmDescriptions.byId(apiToken, entry.getKey());
-        return new FilmDtoAdapter(filmDescription, isOscarWinner(filmDescription), entry.getValue());
-    }
-
     private FilmDto filmDto(FilmDescriptions.FilmDescription filmDescription) {
         return new FilmDtoAdapter(filmDescription, isOscarWinner(filmDescription), rating(filmDescription));
     }
@@ -94,5 +80,45 @@ final class FilmService implements SearchFilmUseCase, RateFilmUseCase, List10Top
 
     private boolean isOscarWinner(FilmDescriptions.FilmDescription filmDescription) {
         return oscarWinners.isWinner(filmDescription.name());
+    }
+
+    private final class TopRatedFilmsPage extends Page {
+
+        private final Ratings.Page original;
+        private final String apiToken;
+
+        private TopRatedFilmsPage(Ratings.Page original, String apiToken) {
+            this.original = original;
+            this.apiToken = apiToken;
+        }
+
+        @Override
+        public Collection<FilmDto> films() {
+            return original.imdbIdToRating()
+                    .entrySet()
+                    .stream()
+                    .map(entry -> filmDto(apiToken, entry))
+                    .sorted(byBoxOffice())
+                    .collect(Collectors.toList());
+        }
+
+        @Override
+        public int page() {
+            return original.page();
+        }
+
+        @Override
+        public int totalPages() {
+            return original.totalPages();
+        }
+
+        private Comparator<FilmDto> byBoxOffice() {
+            return Comparator.comparing(FilmDto::boxOffice).reversed();
+        }
+
+        private FilmDto filmDto(String apiToken, Map.Entry<String, Integer> entry) {
+            var filmDescription = filmDescriptions.byId(apiToken, entry.getKey());
+            return new FilmDtoAdapter(filmDescription, isOscarWinner(filmDescription), entry.getValue());
+        }
     }
 }

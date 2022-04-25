@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -71,7 +70,8 @@ final class IntegrationTest {
     @Test
     @Order(0)
     void userCanSearchForFilm() {
-        assertThat(testRestTemplate.exchange(searchRequest(), JsonPage.class).getBody()).isEqualTo(expectedPage());
+        assertThat(testRestTemplate.exchange(searchRequest(), JsonPage.class).getBody())
+                .isEqualTo(expectedSearchResultPage());
     }
 
     @Test
@@ -82,12 +82,9 @@ final class IntegrationTest {
 
     @Test
     @Order(2)
-    void userCanViewTop10Films() {
-        assertThat(
-                testRestTemplate.exchange(top10Request(), new ParameterizedTypeReference<List<JsonFilmDto>>() {})
-                        .getBody()
-        )
-                .containsOnly(expectedFilm());
+    void userCanViewTopFilms() {
+        assertThat(testRestTemplate.exchange(topRequest(), JsonPage.class).getBody())
+                .isEqualTo(expectedTopRatedPage());
     }
 
     private RequestEntity<Object> searchRequest() {
@@ -102,10 +99,6 @@ final class IntegrationTest {
         );
     }
 
-    private JsonFilmDto expectedFilm() {
-        return expectedFilm(10);
-    }
-
     private JsonFilmDto expectedFilm(int rating) {
         return new JsonFilmDto(
                 "id",
@@ -116,11 +109,15 @@ final class IntegrationTest {
         );
     }
 
-    private RequestEntity<Object> top10Request() {
+    private RequestEntity<Object> topRequest() {
         return new RequestEntity<>(
                 apiTokenHeaders(),
                 HttpMethod.GET,
-                URI.create("/films/top")
+                UriComponentsBuilder.fromUriString("/films/top")
+                        .queryParam("page", 0)
+                        .queryParam("elements", 10)
+                        .build()
+                        .toUri()
         );
     }
 
@@ -146,9 +143,17 @@ final class IntegrationTest {
         return httpHeaders;
     }
 
-    private JsonPage expectedPage() {
+    private JsonPage expectedSearchResultPage() {
+        return page(0);
+    }
+
+    private JsonPage expectedTopRatedPage() {
+        return page(10);
+    }
+
+    private JsonPage page(int rating) {
         return new JsonPage(
-                List.of(expectedFilm(0)),
+                List.of(expectedFilm(rating)),
                 0,
                 1
         );

@@ -1,7 +1,7 @@
 package com.github.xini1.domain;
 
 import com.github.xini1.port.usecase.FilmDto;
-import com.github.xini1.port.usecase.SearchFilmUseCase;
+import com.github.xini1.port.usecase.Page;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Maxim Tereshchenko
  */
-final class PageStub extends SearchFilmUseCase.Page {
+final class PageStub extends Page {
 
     private final Collection<FilmDto> films;
 

@@ -7,9 +7,18 @@ import java.util.Map;
  */
 public interface Ratings {
 
-    void tryAdd(String apiToken, String imdbId, int rating);
+    void add(String apiToken, String imdbId, int rating);
 
-    Map<String, Integer> top10();
+    Page top(int page, int elementsOnPage);
 
     int average(String imdbId);
+
+    interface Page {
+
+        Map<String, Integer> imdbIdToRating();
+
+        int page();
+
+        int totalPages();
+    }
 }

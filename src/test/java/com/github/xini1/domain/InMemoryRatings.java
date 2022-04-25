@@ -18,20 +18,14 @@ final class InMemoryRatings implements Ratings {
     private final Map<String, List<Rating>> map = new HashMap<>();
 
     @Override
-    public void tryAdd(String apiToken, String imdbId, int rating) {
+    public void add(String apiToken, String imdbId, int rating) {
         map.computeIfAbsent(imdbId, unused -> new ArrayList<>());
         map.get(imdbId).add(new Rating(apiToken, rating));
     }
 
     @Override
-    public Map<String, Integer> top10() {
-        return map.entrySet()
-                .stream()
-                .map(this::imdbIdToAverageRating)
-                .sorted(byAverageRating())
-                .limit(10)
-                .map(this::imdbIdToRoundedAverageRating)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    public Page top(int page, int elementsOnPage) {
+        return page(imdbIdToAverageRating(page), page, elementsOnPage);
     }
 
     @Override
@@ -41,6 +35,46 @@ final class InMemoryRatings implements Ratings {
         }
 
         return Math.round(average(map.get(imdbId)));
+    }
+
+    private Page page(Map<String, Integer> imdbIdToAverageRating, int page, int elementsOnPage) {
+        return new Page() {
+            @Override
+            public Map<String, Integer> imdbIdToRating() {
+                return imdbIdToAverageRating.entrySet()
+                        .stream()
+                        .skip((long) elementsOnPage * page)
+                        .limit(elementsOnPage)
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            }
+
+            @Override
+            public int page() {
+                return page;
+            }
+
+            @Override
+            public int totalPages() {
+                return imdbIdToAverageRating.size() / elementsOnPage + accountForLastPage();
+            }
+
+            private int accountForLastPage() {
+                if (imdbIdToAverageRating.size() % elementsOnPage == 0) {
+                    return 0;
+                }
+
+                return 1;
+            }
+        };
+    }
+
+    private Map<String, Integer> imdbIdToAverageRating(int page) {
+        return map.entrySet()
+                .stream()
+                .map(this::imdbIdToAverageRating)
+                .sorted(byAverageRating())
+                .map(this::imdbIdToRoundedAverageRating)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private Map.Entry<String, Integer> imdbIdToRoundedAverageRating(Map.Entry<String, Float> entry) {

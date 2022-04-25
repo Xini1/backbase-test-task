@@ -17,8 +17,8 @@ final class OmdbApiFilmDescriptions implements FilmDescriptions {
     }
 
     @Override
-    public Page byName(String apiToken, String name, int pageNumber) {
-        return new OmdbPage(omdbApiFeignClient.find(apiToken, name, pageNumber + 1), pageNumber, apiToken);
+    public Page byName(String apiToken, String name, int page) {
+        return new OmdbPage(omdbApiFeignClient.find(apiToken, name, page + 1), page, apiToken);
     }
 
     @Override

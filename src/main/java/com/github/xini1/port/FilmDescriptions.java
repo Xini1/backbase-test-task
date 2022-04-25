@@ -7,7 +7,7 @@ import java.util.Collection;
  */
 public interface FilmDescriptions {
 
-    Page byName(String apiToken, String name, int pageNumber);
+    Page byName(String apiToken, String name, int page);
 
     FilmDescription byId(String apiToken, String imdbId);
 

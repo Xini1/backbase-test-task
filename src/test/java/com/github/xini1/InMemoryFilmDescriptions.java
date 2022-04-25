@@ -20,8 +20,8 @@ public final class InMemoryFilmDescriptions implements FilmDescriptions {
     }
 
     @Override
-    public Page byName(String apiToken, String name, int pageNumber) {
-        return new StubsPage(stubs(name), pageNumber);
+    public Page byName(String apiToken, String name, int page) {
+        return new StubsPage(stubs(name), page);
     }
 
     @Override
@@ -105,24 +105,24 @@ public final class InMemoryFilmDescriptions implements FilmDescriptions {
     private static final class StubsPage implements Page {
 
         private final Collection<Stub> allFoundStubs;
-        private final int pageNumber;
+        private final int page;
 
-        private StubsPage(Collection<Stub> allFoundStubs, int pageNumber) {
+        private StubsPage(Collection<Stub> allFoundStubs, int page) {
             this.allFoundStubs = allFoundStubs;
-            this.pageNumber = pageNumber;
+            this.page = page;
         }
 
         @Override
         public Collection<FilmDescription> filmDescriptions() {
             return allFoundStubs.stream()
-                    .skip(10L * pageNumber)
+                    .skip(10L * page)
                     .limit(10)
                     .collect(Collectors.toList());
         }
 
         @Override
         public int page() {
-            return pageNumber;
+            return page;
         }
 
         @Override

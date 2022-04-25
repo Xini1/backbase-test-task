@@ -3,7 +3,7 @@ package com.github.xini1.domain;
 import com.github.xini1.port.FilmDescriptions;
 import com.github.xini1.port.OscarWinners;
 import com.github.xini1.port.Ratings;
-import com.github.xini1.port.usecase.List10TopRatedFilmsUseCase;
+import com.github.xini1.port.usecase.ListTopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
@@ -30,8 +30,8 @@ public final class FilmsModuleConfiguration {
         return new ValidatingRateFilmUseCase(service());
     }
 
-    public List10TopRatedFilmsUseCase list10TopRatedFilmsUseCase() {
-        return new ValidatingList10TopRatedFilmsUseCase(service());
+    public ListTopRatedFilmsUseCase list10TopRatedFilmsUseCase() {
+        return new ValidatingListTopRatedFilmsUseCase(service());
     }
 
     private FilmService service() {

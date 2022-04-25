@@ -3,6 +3,7 @@ package com.github.xini1.domain;
 import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNameRequired;
 import com.github.xini1.exception.IncorrectPageNumber;
+import com.github.xini1.port.usecase.Page;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
 /**
@@ -17,16 +18,16 @@ final class ValidatingSearchFilmUseCase implements SearchFilmUseCase {
     }
 
     @Override
-    public Page search(String apiToken, String name, int pageNumber) {
+    public Page search(String apiToken, String name, int page) {
         if (apiToken == null || apiToken.isBlank()) {
             throw new ApiTokenRequired();
         }
         if (name == null || name.isBlank()) {
             throw new FilmNameRequired();
         }
-        if (pageNumber < 0) {
+        if (page < 0) {
             throw new IncorrectPageNumber();
         }
-        return original.search(apiToken, name, pageNumber);
+        return original.search(apiToken, name, page);
     }
 }

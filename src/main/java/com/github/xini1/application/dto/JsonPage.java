@@ -2,7 +2,7 @@ package com.github.xini1.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.xini1.port.usecase.SearchFilmUseCase;
+import com.github.xini1.port.usecase.Page;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +29,7 @@ public class JsonPage {
         this.totalPages = totalPages;
     }
 
-    public JsonPage(SearchFilmUseCase.Page page) {
+    public JsonPage(Page page) {
         this(
                 page.films()
                         .stream()
