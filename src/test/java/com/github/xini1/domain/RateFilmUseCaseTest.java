@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.xini1.InMemoryFilmDescriptions;
 import com.github.xini1.exception.ApiTokenRequired;
+import com.github.xini1.exception.ElementsOnPageLessThanZero;
 import com.github.xini1.exception.FilmNotFound;
 import com.github.xini1.exception.ImdbIdRequired;
 import com.github.xini1.exception.IncorrectRating;
+import com.github.xini1.exception.PageNumberLessThanZero;
 import com.github.xini1.port.usecase.ListTopRatedFilmsUseCase;
 import com.github.xini1.port.usecase.RateFilmUseCase;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
@@ -19,7 +21,7 @@ import org.junit.jupiter.api.Test;
 final class RateFilmUseCaseTest {
 
     private final RateFilmUseCase rateFilmUseCase;
-    private final ListTopRatedFilmsUseCase list10TopRatedFilmsUseCase;
+    private final ListTopRatedFilmsUseCase listTopRatedFilmsUseCase;
     private final SearchFilmUseCase searchFilmUseCase;
 
     RateFilmUseCaseTest() {
@@ -35,7 +37,7 @@ final class RateFilmUseCaseTest {
                 new InMemoryRatings()
         );
         rateFilmUseCase = configuration.rateFilmUseCase();
-        list10TopRatedFilmsUseCase = configuration.list10TopRatedFilmsUseCase();
+        listTopRatedFilmsUseCase = configuration.listTopRatedFilmsUseCase();
         searchFilmUseCase = configuration.searchFilmUseCase();
     }
 
@@ -43,7 +45,7 @@ final class RateFilmUseCaseTest {
     void givenUserRatedFilm_thenFilmHasExactRating() {
         rateFilmUseCase.rate("token", "id1", 10);
 
-        assertThat(list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 1))
+        assertThat(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 1))
                 .isEqualTo(
                         new PageStub(
                                 new FilmDtoStub("id1", "Rated1", false, 10, 4)
@@ -56,7 +58,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token1", "id1", 10);
         rateFilmUseCase.rate("token2", "id1", 4);
 
-        assertThat(list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("token1", 0, 1))
+        assertThat(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token1", 0, 1))
                 .isEqualTo(
                         new PageStub(
                                 new FilmDtoStub("id1", "Rated1", false, 7, 4)
@@ -69,7 +71,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token1", "id1", 10);
         rateFilmUseCase.rate("token2", "id1", 5);
 
-        assertThat(list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("token1", 0, 1))
+        assertThat(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token1", 0, 1))
                 .isEqualTo(
                         new PageStub(
                                 new FilmDtoStub("id1", "Rated1", false, 8, 4)
@@ -84,7 +86,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token", "id3", 10);
         rateFilmUseCase.rate("token", "id4", 10);
 
-        assertThat(list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 4))
+        assertThat(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 4))
                 .isEqualTo(
                         new PageStub(
                                 new FilmDtoStub("id4", "Rated4", false, 10, 4),
@@ -102,7 +104,7 @@ final class RateFilmUseCaseTest {
         rateFilmUseCase.rate("token", "id3", 10);
         rateFilmUseCase.rate("token", "id4", 10);
 
-        var page = list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 3);
+        var page = listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, 3);
 
         assertThat(page.films()).hasSize(3);
         assertThat(page.totalPages()).isEqualTo(2);
@@ -163,18 +165,34 @@ final class RateFilmUseCaseTest {
     }
 
     @Test
-    void givenApiTokenINull_whenList10TopRatedFilms_thenApiTokenRequiredThrown() {
+    void givenApiTokenINull_whenListTopRatedFilms_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() ->
-                list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice(null, 0, 0)
+                listTopRatedFilmsUseCase.topRatedSortedByBoxOffice(null, 0, 0)
         )
                 .isInstanceOf(ApiTokenRequired.class);
     }
 
     @Test
-    void givenApiTokenIEmpty_whenList10TopRatedFilms_thenApiTokenRequiredThrown() {
+    void givenApiTokenIsEmpty_whenListTopRatedFilms_thenApiTokenRequiredThrown() {
         assertThatThrownBy(() ->
-                list10TopRatedFilmsUseCase.topRatedSortedByBoxOffice("", 0, 0)
+                listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("", 0, 0)
         )
                 .isInstanceOf(ApiTokenRequired.class);
+    }
+
+    @Test
+    void givenPageNumberIsLessThanZero_whenListTopRatedFilms_thenPageNumberLessThanZeroThrown() {
+        assertThatThrownBy(() ->
+                listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", -1, 0)
+        )
+                .isInstanceOf(PageNumberLessThanZero.class);
+    }
+
+    @Test
+    void givenElementsOnPageIsLessThanZero_whenListTopRatedFilms_thenElementsOnPageLessThanZeroThrown() {
+        assertThatThrownBy(() ->
+                listTopRatedFilmsUseCase.topRatedSortedByBoxOffice("token", 0, -1)
+        )
+                .isInstanceOf(ElementsOnPageLessThanZero.class);
     }
 }

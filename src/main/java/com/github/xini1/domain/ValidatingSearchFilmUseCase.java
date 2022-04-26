@@ -2,7 +2,7 @@ package com.github.xini1.domain;
 
 import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNameRequired;
-import com.github.xini1.exception.IncorrectPageNumber;
+import com.github.xini1.exception.PageNumberLessThanZero;
 import com.github.xini1.port.usecase.Page;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 
@@ -26,7 +26,7 @@ final class ValidatingSearchFilmUseCase implements SearchFilmUseCase {
             throw new FilmNameRequired();
         }
         if (page < 0) {
-            throw new IncorrectPageNumber();
+            throw new PageNumberLessThanZero();
         }
         return original.search(apiToken, name, page);
     }

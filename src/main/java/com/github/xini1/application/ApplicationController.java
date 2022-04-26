@@ -35,7 +35,11 @@ class ApplicationController {
     }
 
     @GetMapping
-    JsonPage search(@RequestHeader String apiToken, @RequestParam String search, @RequestParam int page) {
+    JsonPage search(
+            @RequestHeader String apiToken,
+            @RequestParam String search,
+            @RequestParam(defaultValue = "0") int page
+    ) {
         return new JsonPage(searchFilmUseCase.search(apiToken, search, page));
     }
 
@@ -45,7 +49,11 @@ class ApplicationController {
     }
 
     @GetMapping("/top")
-    JsonPage top(@RequestHeader String apiToken, @RequestParam int page, @RequestParam int elements) {
+    JsonPage top(
+            @RequestHeader String apiToken,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int elements
+    ) {
         return new JsonPage(listTopRatedFilmsUseCase.topRatedSortedByBoxOffice(apiToken, page, elements));
     }
 }

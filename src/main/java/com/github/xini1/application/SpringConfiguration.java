@@ -35,7 +35,7 @@ public class SpringConfiguration {
         return new ApplicationController(
                 configuration.searchFilmUseCase(),
                 configuration.rateFilmUseCase(),
-                configuration.list10TopRatedFilmsUseCase()
+                configuration.listTopRatedFilmsUseCase()
         );
     }
 

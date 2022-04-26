@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.xini1.InMemoryFilmDescriptions;
 import com.github.xini1.exception.ApiTokenRequired;
 import com.github.xini1.exception.FilmNameRequired;
-import com.github.xini1.exception.IncorrectPageNumber;
+import com.github.xini1.exception.PageNumberLessThanZero;
 import com.github.xini1.port.usecase.SearchFilmUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -98,8 +98,8 @@ final class SearchFilmUseCaseTest {
     }
 
     @Test
-    void givenPageNumberIsLower0_thenIncorrectPageNumberThrown() {
+    void givenPageNumberIsLower0_thenPageNumberLessThanZeroThrown() {
         assertThatThrownBy(() -> useCase.search("whatever", "whatever", -1))
-                .isInstanceOf(IncorrectPageNumber.class);
+                .isInstanceOf(PageNumberLessThanZero.class);
     }
 }

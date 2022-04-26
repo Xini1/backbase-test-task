@@ -30,7 +30,7 @@ public final class FilmsModuleConfiguration {
         return new ValidatingRateFilmUseCase(service());
     }
 
-    public ListTopRatedFilmsUseCase list10TopRatedFilmsUseCase() {
+    public ListTopRatedFilmsUseCase listTopRatedFilmsUseCase() {
         return new ValidatingListTopRatedFilmsUseCase(service());
     }
 
