@@ -25,3 +25,31 @@ Implementation of core domain can be changed without affecting tests much.
 The application is built with strong encapsulation in mind: only a handful of classes are public.
 Here you can see directions of dependency between packages:
 ![](package-dependency-graph.jpeg)
+
+## ReST API
+
+#### GET /films
+
+Search for film by its title
+
+Headers: apiToken (required) - token to access IMDB API
+
+URL parameters: search (required) - film title to search for; page (0 by default) - page number
+
+#### POST /films/{imdbId}/ratings
+
+Rate film by its IMDB ID
+
+Headers: apiToken (required) - token to access IMDB API
+
+Path variables: imdbId (required) - film IMDB ID
+
+Body: single number of film rating from 1 to 10 (json)
+
+#### GET /films/top
+
+List top-rated films sorted by box office
+
+Headers: apiToken (required) - token to access IMDB API
+
+URL parameters: page (0 by default) - page number; elements (10 by default) - number of elements on page
