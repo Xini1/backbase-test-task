@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "b2492e8b-e0cd-47d0-8f2e-89ae08e7af0c",
+		"name": "Films",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Search for film by its title",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "apiToken",
+						"value": "29075f13",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/films?search=avengers&page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"films"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "avengers"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rate film by its IMDB ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "apiToken",
+						"value": "29075f13",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "10",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/films/tt0848228/ratings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"films",
+						"tt0848228",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List top-rated films sorted by box office",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "apiToken",
+						"value": "29075f13",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/films/top?page=0&elements=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"films",
+						"top"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "elements",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
