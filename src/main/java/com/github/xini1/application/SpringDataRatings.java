@@ -4,6 +4,11 @@ import com.github.xini1.application.entity.RatingEntity;
 import com.github.xini1.port.Ratings;
 import org.springframework.data.domain.PageRequest;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -22,7 +27,7 @@ final class SpringDataRatings implements Ratings {
     @Override
     public void add(String apiToken, String imdbId, int rating) {
         var ratingEntity = new RatingEntity();
-        ratingEntity.setApiToken(apiToken);
+        ratingEntity.setHash(hash(apiToken));
         ratingEntity.setImdbId(imdbId);
         ratingEntity.setRating(rating);
         ratingsRepository.save(ratingEntity);
@@ -38,6 +43,23 @@ final class SpringDataRatings implements Ratings {
         return ratingsRepository.average(imdbId)
                 .map(Math::round)
                 .orElse(0);
+    }
+
+    private byte[] hash(String apiToken) {
+        try {
+            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+                    .generateSecret(
+                            new PBEKeySpec(
+                                    apiToken.toCharArray(),
+                                    "salt".getBytes(StandardCharsets.UTF_8), //to reproduce hash without storing salt
+                                    65536,
+                                    128
+                            )
+                    )
+                    .getEncoded();
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new CouldNotHashApiToken(e);
+        }
     }
 
     private Page page(org.springframework.data.domain.Page<RatingsRepository.TopRatedProjection> page) {
@@ -65,5 +87,12 @@ final class SpringDataRatings implements Ratings {
                 RatingsRepository.TopRatedProjection::getImdbId,
                 topRatedProjection -> Math.round(topRatedProjection.getRating())
         );
+    }
+
+    public static final class CouldNotHashApiToken extends RuntimeException {
+
+        public CouldNotHashApiToken(Throwable cause) {
+            super(cause);
+        }
     }
 }

@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -16,18 +17,10 @@ import java.util.Objects;
 public class RatingEntity {
 
     @Id
-    private String apiToken;
+    private byte[] hash;
     @Id
     private String imdbId;
     private int rating;
-
-    public String getApiToken() {
-        return apiToken;
-    }
-
-    public void setApiToken(String apiToken) {
-        this.apiToken = apiToken;
-    }
 
     public String getImdbId() {
         return imdbId;
@@ -45,20 +38,20 @@ public class RatingEntity {
         this.rating = rating;
     }
 
+    public byte[] getHash() {
+        return hash;
+    }
+
+    public void setHash(byte[] hash) {
+        this.hash = hash;
+    }
+
     public static class CompositeKey implements Serializable {
 
         private static final long serialVersionUID = -4802684950936109034L;
 
-        private String apiToken;
+        private byte[] hash;
         private String imdbId;
-
-        public String getApiToken() {
-            return apiToken;
-        }
-
-        public void setApiToken(String apiToken) {
-            this.apiToken = apiToken;
-        }
 
         public String getImdbId() {
             return imdbId;
@@ -70,19 +63,25 @@ public class RatingEntity {
 
         @Override
         public int hashCode() {
-            return Objects.hash(apiToken, imdbId);
+            int result = Objects.hash(imdbId);
+            result = 31 * result + Arrays.hashCode(hash);
+            return result;
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            var that = (CompositeKey) o;
-            return apiToken.equals(that.apiToken) && imdbId.equals(that.imdbId);
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CompositeKey that = (CompositeKey) o;
+            return Arrays.equals(hash, that.hash) && imdbId.equals(that.imdbId);
+        }
+
+        public byte[] getHash() {
+            return hash;
+        }
+
+        public void setHash(byte[] hash) {
+            this.hash = hash;
         }
     }
 }
